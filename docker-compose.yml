@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spatial_backend
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    env_file:
+      - .env
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+    container_name: spatial_frontend
+    ports:
+      - "${FRONTEND_PORT:-80}:${FRONTEND_PORT:-80}"
+    environment:
+      - FRONTEND_PORT=${FRONTEND_PORT:-80}
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    restart: always
