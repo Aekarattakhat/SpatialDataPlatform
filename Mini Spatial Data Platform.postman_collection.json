@@ -1,0 +1,122 @@
+{
+  "info": {
+    "_postman_id": "02978d28-9337-480d-91dc-f387043e7551",
+    "name": "Mini Spatial Data Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16755927"
+  },
+  "item": [
+    {
+      "name": "list location",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/locations/?page=2&limit=5",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "locations",
+            ""
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "2"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create location",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"type\": \"Feature\",\r\n  \"geometry\": {\r\n    \"type\": \"Point\",\r\n    \"coordinates\": [102.8222814306895, 16.474635728039182]\r\n  },\r\n  \"properties\": {\r\n    \"name\": \"มหาวิทยาลัยขอนแก่น\"\r\n  }\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/locations/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "locations",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update location",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"coordinates\": null,\r\n  \"properties\": {\r\n    \"name\": \"Updated Location Name\"\r\n  }\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/locations/{{location_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "locations",
+            "{{location_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete location",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/locations/{{location_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "locations",
+            "{{location_id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "location_id",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
