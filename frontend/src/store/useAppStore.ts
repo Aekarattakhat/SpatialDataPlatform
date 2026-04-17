@@ -72,7 +72,7 @@ export const useAppStore = create<AppState>((set) => ({
   error: null,
   page: 1,
   totalPages: 1,
-  limit: 10,
+  limit: 25,
   selectedLocationId: null,
   showHeatmap: false,
   isAddingLocation: false,

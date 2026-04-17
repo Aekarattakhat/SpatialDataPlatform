@@ -5,7 +5,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY .env ./
+ARG FRONTEND_PORT=80
+ARG BACKEND_BASE_URL=http://localhost:8080/v1
+
+ENV FRONTEND_PORT=$FRONTEND_PORT
+ENV BACKEND_BASE_URL=$BACKEND_BASE_URL
+
 COPY . .
 RUN npm run build
 

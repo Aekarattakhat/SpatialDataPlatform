@@ -79,35 +79,36 @@ export function MapView({ data, selectedLocationId, onPointClick, showHeatmap, i
                     visibility: 'none'
                 },
                 paint: {
-                    // Increase weight as zoom increases
+                    // Each point contributes equally to density
                     'heatmap-weight': 1,
-                    // Increase intensity as zoom increases
+                    // Moderate intensity to prevent oversaturation
                     'heatmap-intensity': [
                         'interpolate',
                         ['linear'],
                         ['zoom'],
-                        0, 1,
-                        9, 3
+                        0, 0.5,
+                        9, 1.5
                     ],
-                    // Assign color values based on density
+                    // Assign color values based on density - more granular steps
                     'heatmap-color': [
                         'interpolate',
                         ['linear'],
                         ['heatmap-density'],
                         0, 'rgba(33,102,172,0)',
-                        0.2, '#3b82f6',
-                        0.4, '#8b5cf6',
-                        0.6, '#ec4899',
-                        0.8, '#f43f5e',
-                        1, '#ef4444'
+                        0.1, '#3b82f6',      // Very low density - blue
+                        0.3, '#8b5cf6',      // Low density - purple
+                        0.5, '#ec4899',      // Medium density - pink
+                        0.7, '#f43f5e',      // High density - rose
+                        0.9, '#ef4444',      // Very high density - red
+                        1, '#dc2626'         // Maximum density - dark red
                     ],
-                    // Adjust radius by zoom level
+                    // Smaller radius for better density differentiation
                     'heatmap-radius': [
                         'interpolate',
                         ['linear'],
                         ['zoom'],
-                        0, 15,
-                        9, 30
+                        0, 8,
+                        9, 20
                     ],
                     // Transition heatmap opacity by zoom level to fade out when points appear
                     'heatmap-opacity': [
@@ -124,6 +125,7 @@ export function MapView({ data, selectedLocationId, onPointClick, showHeatmap, i
                 id: 'locations-halo',
                 type: 'circle',
                 source: 'locations',
+                minzoom: 10,
                 paint: {
                     'circle-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#f43f5e', '#60a5fa'],
                     'circle-radius': ['case', ['boolean', ['feature-state', 'selected'], false], 18, 12],
@@ -136,6 +138,7 @@ export function MapView({ data, selectedLocationId, onPointClick, showHeatmap, i
                 id: 'locations-point',
                 type: 'circle',
                 source: 'locations',
+                minzoom: 10,
                 paint: {
                     'circle-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#fb7185', '#3b82f6'],
                     'circle-radius': ['case', ['boolean', ['feature-state', 'selected'], false], 8, 6],
@@ -159,8 +162,21 @@ export function MapView({ data, selectedLocationId, onPointClick, showHeatmap, i
     // Handle Heatmap Visibility
     useEffect(() => {
         if (!isLoaded || !map.current) return;
+        
+        // Toggle heatmap visibility
         if (map.current.getLayer('locations-heatmap')) {
             map.current.setLayoutProperty('locations-heatmap', 'visibility', showHeatmap ? 'visible' : 'none');
+        }
+        
+        // When heatmap is disabled, show points at all zoom levels
+        // When heatmap is enabled, only show points when zoomed in (minzoom: 10)
+        const pointMinZoom = showHeatmap ? 10 : 0;
+        
+        if (map.current.getLayer('locations-halo')) {
+            map.current.setLayerZoomRange('locations-halo', pointMinZoom, 24);
+        }
+        if (map.current.getLayer('locations-point')) {
+            map.current.setLayerZoomRange('locations-point', pointMinZoom, 24);
         }
     }, [isLoaded, showHeatmap]);
 
@@ -226,6 +242,7 @@ export function MapView({ data, selectedLocationId, onPointClick, showHeatmap, i
 
             // Show context menu instead of directly creating
             contextMenuPopup.current?.remove();
+            selectedPopup.current.remove();
 
             const div = document.createElement('div');
             div.style.padding = '2px';

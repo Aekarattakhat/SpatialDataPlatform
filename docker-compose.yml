@@ -14,11 +14,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+        - BACKEND_BASE_URL=${BACKEND_BASE_URL:-http://localhost:8080/v1}
     container_name: spatial_frontend
     ports:
-      - "3000:3000"
-    environment:
-      - FRONTEND_PORT=3000
+      - "${FRONTEND_PORT:-3000}:${FRONTEND_PORT:-3000}"
     env_file:
       - ./frontend/.env
     depends_on:
