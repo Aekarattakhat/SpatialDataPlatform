@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Feature, CreateLocationPayload, UpdateLocationPayload } from '../types';
 
-const API_BASE_URL = import.meta.env.BACKEND_BASE_URL || 'http://127.0.0.1:8000/v1';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || 'http://127.0.0.1:8000/v1';
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,

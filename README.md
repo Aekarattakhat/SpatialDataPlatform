@@ -9,6 +9,12 @@
 
 แอปพลิเคชันรองรับรูปแบบข้อมูล GeoJSON สำหรับข้อมูลเชิงพื้นที่ และมีโหมดการรับชมที่หลากหลาย ทั้งโหมดแผนที่, โหมดตาราง และโหมดแบ่งหน้าจอเพื่อการวิเคราะห์ข้อมูลที่ครอบคลุม
 
+#### Online Demo
+
+**Frontend Online Demo:** https://aekarattakhat.com/
+
+**Backend API Online Demo(Base URL):** https://api.aekarattakhat.com/v1
+
 ## สารบัญ
 
 - [สิ่งที่ทำไปแล้ว](#สิ่งที่ทำไปแล้ว)
